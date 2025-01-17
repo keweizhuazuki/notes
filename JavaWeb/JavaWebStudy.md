@@ -313,6 +313,7 @@
 - 打包执行命令行：java -jar xxx.jar --name=value
 - ![alt text](image-15.png)
 - **获取Bean**
+  - 通过**ApplicationContext**获取bean
   - 根据name获取bean：`Object getBean(String name)`
   - 根据类型获取bean：`<T> T getBean(Class<T> requiredType)`
   - 根据name和类型获取bean：`<T> T getBean(String name, Class<T> requiredType)`
@@ -322,3 +323,50 @@
   - prototype：多例
   - ![alt text](image-17.png)
   - 在开始的时候就创建bean：可以用`@Lazy`注解，表示懒加载，只有在第一次使用的时候才会创建。
+- **Bean的管理**
+  - 如果要管理第三方的bean，可以使用`@Bean`注解
+  - ![alt text](image-19.png)
+
+#### SpringBoot原理
+- 起步依赖：因为SpringBoot的依赖太多，所以SpringBoot提供了起步依赖，只需要引入一个起步依赖，就可以引入其他依赖，依赖传递。
+- 自动配置：SpringBoot会自动配置很多东西，比如数据库连接池，模板引擎，web服务器等等。
+  - 方案1: @ComponentScan组件扫描位置（使用繁琐）
+  - 方案2: @Import导入组件类
+    - 导入普通类：`@Import({User.class})`
+    - 导入配置类：`@Import({UserConfig.class})`
+    - 导入实现ImportSelector接口的类：`@Import({MyImportSelector.class})`
+    - @EnableXXX注解：`@EnableXXX`注解会导入一个组件，这个组件就是一个配置类，封装了ImportSelector接口的实现类
+- ![alt text](image-20.png)
+- ![alt text](image-21.png)
+- **Conditional注解**：条件注解，只有满足条件才会生效
+  - 位置：类上，方法上
+  - 子注解：
+    - @ConditionalOnClass：判断环境是否有对应字节码文件，有则注入bean到ioc容器中
+    - @ConditionalOnMissingBean：判断容器中是否有对应的bean，没有则注入bean到ioc容器中，指定类型（value属性）或者名字（name属性）
+    - @ConditionalOnProperty：判断配置文件中是否有对应的配置，有则注入bean到ioc容器中，指定属性（name属性）和值（havingValue属性）
+- ![alt text](image-22.png)
+
+#### Maven高级
+- 依赖继承继承
+  - 打包方式：
+    - jar：默认
+    - pom：不打包
+    - war：web项目
+  - ![alt text](image-24.png)
+  - 版本锁定：
+    - 在父项目中使用`<dependencyManagement>`标签，锁定版本
+    - 子项目中引入依赖，不需要写版本号
+    - 自定义属性/引用属性：
+      - Properties标签定义属性
+      - 使用`${}`引用属性
+      - ![alt text](image-25.png)
+- 聚合
+  - 将多个模块组织成一个整体，同时进行项目的构建
+  - 聚合工程
+    - 一个不具有业务功能的“空”工程（仅包含pom.xml文件）
+    - 通过modules标签引入其他模块
+    - ![alt text](image-26.png)
+- 私服
+  - 特殊的远程仓库，用于存放公司内部的jar包
+  - ![alt text](image-27.png)
+  - 配置参考文件：[私服配置说明](./私服配置说明.md)
