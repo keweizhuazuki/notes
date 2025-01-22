@@ -40,4 +40,22 @@
     - ![alt text](image-5.png)
   - DB静态工具：**解决循环依赖问题**
     - ![alt text](image-6.png)
-    - 
+  - 逻辑删除：模拟删除效果
+    - 在表中添加一个字段，用于标记是否删除
+    - 查询时，只查询未标记删除的数据
+    - 逻辑删除使用update语句
+    - 配置：
+      - ![alt text](image-7.png)
+  - 枚举处理器
+    - 枚举类的字段上加上注解：@EnumValue
+    - 在application.yml中配置枚举处理器
+      - ![alt text](image-8.png)
+  - JSON处理器
+    - 数据库字段为json格式时，需要加上注解：@TableField(typeHandler = JacksonTypeHandler.class)
+    - TableField中的autoResultMap属性设置为true
+    - ![alt text](image-9.png)
+  - 分页插件
+    - 配置类注册分页插件
+      - ![alt text](image-10.png)
+    - 使用page
+      - ![alt text](image-11.png)
