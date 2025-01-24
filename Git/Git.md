@@ -35,5 +35,10 @@
 - 远程仓库添加
   - `git remote add origin + ssh`:添加远程仓库
   - `git remote`:查看远程仓库
-  - `git push -u origin master`:推送到远程仓库
-  - `git push -set-upstream origin master`:推送到远程仓库
+  - `git push -u origin main`:推送到远程仓库
+  - `git push -set-upstream origin main:main`:推送到远程仓库
+- 拉取
+  - `git clone + ssh`:拉取远程仓库
+  - `git fetch origin main`:拉取远程仓库,不合并
+- 解决合并冲突
+  - ![alt text](image-2.png)
