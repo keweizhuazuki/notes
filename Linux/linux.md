@@ -31,7 +31,7 @@
   - rm [-r -f] [文件名]: 删除文件
     - -r: 删除文件夹
     - -f: 强制删除
-      - su -root: 切换到root用户
+      - **su -root: 切换到root用户**
       - 通过exit退出root用户
     - 支持通配符 *
   - which: 查找命令的路径
@@ -71,3 +71,33 @@
     - nyy: 复制n行
     - p: 粘贴
     - u: 撤销
+
+- **文件权限**
+  - root用户
+    - su - root: 切换到root用户
+    - 通过exit退出root用户或者ctrl+d
+  - 权限授予
+    - sudo: 临时授权
+    - ![alt text](image.png)
+- **用户和用户组**
+  - groupadd: 创建用户组
+  - groupdel: 删除用户组
+  - useradd: 创建用户
+    - -g: 指定用户组
+    - -d: 指定用户目录
+  - userdel: 删除用户
+    - -r: 删除用户目录
+  - id: 查看用户信息
+  - usermod -aG 组名 用户名: 将用户添加到用户组
+  - getent passwd: 查看所有用户
+  - getent group: 查看所有用户组
+- **文件权限** 
+  - ![alt text](image-1.png)
+  - r: 读权限
+  - w: 写权限
+  - x: 执行权限
+- **chmod**
+  - chmod [-R] 权限 文件名: 递归修改文件权限
+    - u: 用户
+    - g: 用户组
+    - o: 其他用户
