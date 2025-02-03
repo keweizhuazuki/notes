@@ -101,3 +101,103 @@
     - u: 用户
     - g: 用户组
     - o: 其他用户
+    - ![alt text](image-2.png)
+- **chown**
+  - ![alt text](image-3.png)
+
+- **实用技巧**
+  - 强制停止：ctrl+c
+  - 退出或登出：ctrl+d
+  - 历史命令：history
+  - 快捷匹配命令：!+模糊命令
+  - 快速匹配：ctrl+r
+- **yum安装**
+  - 需要联网和root权限
+  - yum [-y] [install | remove | search] 软件名
+    - -y: 自动确认
+- **systemctl命令**
+  - systemctl [start | stop | status | enable | disable] 服务名
+- **软链接**
+  - ln -s 源文件 目标文件
+- **date命令**
+  - date [-d] [+format]
+    - -d: 按照给定的字符串显示时间
+    - 格式化字符串
+      - %Y: 年
+      - %y: 年(后两位)
+      - %m: 月
+      - %d: 日
+      - %H: 时
+      - %M: 分
+      - %S: 秒
+      - %s: 时间戳
+- **ip地址和主机名**
+  - hostname: 查看主机名
+  - hostname set-hostname 主机名: 设置主机名
+- **网络请求和下载**
+  - ping [-c num] ip或主机名: 测试网络连通性
+    - -c: 指定次数
+  - wget [-b] url
+    - -b: 后台下载 
+  - curl [-o] url
+    - -o: 下载文件，当url是下载链接时
+- **端口**
+  - 注册端口: 1024-49151
+  - 动态端口: 49152-65535
+  - nmap ip: 查看端口占用情况
+  - netstart -anp | grep 端口号: 查看端口占用情况
+- **进程**
+  - ps [-e -f]
+    - -e: 显示所有进程
+    - -f: 显示详细信息
+    - 一般使用ps -ef
+    - 精确查找进程：ps -ef | grep 进程名
+    - ![alt text](image-4.png)
+    - 关闭进程：kill [-9] 进程号
+      - -9: 强制关闭
+- **主机状态监控**
+  - top: 查看系统资源占用情况，每隔五秒刷新一次
+    - q/ctl+c: 退出
+  - ![alt text](image-5.png)
+  - ![alt text](image-6.png)
+- **磁盘信息监控**
+  - df [-h]: 查看磁盘信息
+    - -h: 以人类可读的方式显示
+  - iostat [-x][nums1][nums2]: 查看磁盘IO信息
+    - -x: 显示详细信息
+    - nums1: 刷新间隔
+    - nums2: 刷新几次
+- **网络监控**
+  - sar -n DEV [nums1][nums2]: 查看网络信息
+    - -n: 显示网络信息
+    - DEV: 查看网络接口
+    - nums1: 刷新间隔
+    - nums2: 刷新几次
+- **环境变量**
+  - echo $PATH: 输出环境变量
+  - 临时设置：export 变量名=变量值
+  - 永久设置：
+    - 当前用户：~/.bashrc
+    - 所有用户：/etc/profile
+    - 使用source命令使配置生效
+  - 自定义环境变量
+    - export PATH=$PATH:自定义路径
+      - $PATH: 原有路径
+- **上传和下载**
+  - yum install lrzsz
+  - rz: 上传文件
+  - sz: 下载文件
+- **文件压缩和解压**
+  - tar [-c -v -x -f -z- C]
+    - -c: 压缩
+    - -v: 显示详细信息
+    - -x: 解压
+    - -f: 指定文件,要在最后
+    - -z: 使用gzip压缩
+    - -C: 指定解压目录
+    - ![alt text](image-7.png)
+    - ![alt text](image-8.png)
+  - zip [-r] 压缩文件名 文件名
+    - -r: 递归压缩
+  - unzip [-d] 压缩文件名
+    - -d: 指定解压目录
