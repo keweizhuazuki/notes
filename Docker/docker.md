@@ -1,5 +1,6 @@
 #### Docker
 ##### 基础知识
+- 课件：https://www.yuque.com/leifengyang/sutong/au0lv3sv3eldsmn8
 - 基础架构
   - ![alt text](image.png)
 - docker安装：
@@ -22,6 +23,7 @@
     - -p：端口映射
   - docker ps：查看容器
     - -a：查看所有容器（包括已停止的）
+    - -q：只显示容器ID
   - docker stop：停止容器
   - docker start：启动容器
   - docker restart：重启容器
@@ -47,11 +49,45 @@
     - 用户名/镜像名:版本
   - docker push 用户名/镜像名:版本：推送镜像
 
-###### Docker存储
-- 目录挂载
+##### Docker存储
+- 目录挂载：目录挂载允许将宿主机的特定目录或文件直接挂载到容器的指定路径。比如：讲编辑好的html文件挂载到nginx容器的html目录，这样就可以直接在宿主机上修改html文件，而不需要进入容器内部进行修改。
   - docker run -v /宿主机目录:/容器目录
-- 卷映射
+- 卷映射：卷的设计初衷是提供独立于容器生命周期的持久化存储。
   - docker run -v 卷名:/容器目录
   - 默认卷目录：/var/lib/docker/volumes/<volume_name>/_data
 - docker volume ls：查看卷
 - docker volume inspect：查看卷详细信息
+
+##### Docker网络
+- docker 为每个容器分配唯一ip，使用容器ip+容器端口访问
+  - docker container inspect 容器名：查看容器详细信息
+- docker image
+  - connect：连接容器到网络
+  - create xxx：创建网络xxx
+  - disconnect：断开容器网络
+  - inspect：查看网络详细信息
+  - ls：查看网络
+  - prune：删除无用网络
+  - rm：删除网络
+- 例子：
+  - docker network create mynet: 创建网络mynet
+  - docker run -d -p 88:80 --name app1 --network mynet nginx: 创建容器app1并加入mynet网络
+  - 后续可以使用容器名访问容器
+
+##### Docker Compose
+- 需要制作compose.yml文件,把容器的启动命令、端口映射、卷挂载等配置写入文件
+- docker compose up：上线
+  - -d：后台启动
+- docker compose down：下线
+  - --rmi all：删除镜像
+  - -v：删除卷
+- docker compose start：启动
+- docker compose stop：停止 
+- docker compose scale：扩容
+- 基本语法:![alt text](image-1.png)
+- 例子：![alt text](image-2.png)
+ 
+#### Dockerfile
+- Dockerfile是一个文本文件，用来配置镜像的构建过程
+- ![alt text](image-3.png)
+- docker build -f Dockerfile -t 镜像名:版本 .：构建镜像
