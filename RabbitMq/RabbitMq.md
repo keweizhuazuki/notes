@@ -1,2 +1,50 @@
 #### RabbitMQ
-- 介绍和安装
+- 整体架构：
+  - publisher: 消息发送者
+  - consumer: 消息消费者
+  - queue: 消息队列
+  - exchange: 交换机
+  - ![alt text](image.png)
+- 交换机**没有存储消息的能力**，只能将消息转发到队列
+- 数据隔离：
+  - vhost: 虚拟主机，类似于namespace
+  - 不同的vhost之间的数据是隔离的
+- java客户端：使用封装好的**Spring AMQP**
+  - 配置：
+    - ![alt text](image-1.png)
+  - 发送消息：使用rabbitTemplate
+    - ![alt text](image-2.png)
+  - 接受消息：加上@RabbitListener注解
+    - ![alt text](image-3.png)
+  - **消费者消息推送限制**：默认情况下，RabbitMQ会江消息依次轮询投递给绑定在队列上的每一个消费者，但这并没有考虑到消费者是否已经处理完消息，可能出现消息堆积。
+    - 修改配置：
+      - spring.rabbitmq.listener.simple.prefetch=1 : 每次只能获取一条消息
+  - **交换机**
+    - Fanout交换机：广播模式
+      - 会将消息发送到所有绑定的队列
+      - 不需要routingKey，只需要绑定交换机
+    - Direct交换机：定向模式
+      - 需要在客户端设置routingKey，只有routingKey和消息的routingKey一致才会发送到队列
+    - Topic交换机：话题模式
+      - routingKey支持通配符，routingKey可以是多个单词的列表，并且以.分割
+      - *：匹配一个单词
+      - #：匹配多个单词
+      - ex: china.#：匹配china.开头的所有routingKey
+      - ex: china.*：匹配china.后面只有一个单词的routingKey
+  - java客户端声明交换机：
+    - SpringAMQP提供了几个类，可以用来声明交换机、队列、绑定关系
+      - Queue：声明队列，可以用工厂类QueueBuilder创建
+      - Exchange：声明交换机，可以用工厂类ExchangeBuilder创建
+        - ![alt text](image-4.png)
+      - Binding：声明绑定关系，可以用工厂类BindingBuilder创建
+      - 绑定：
+        - 第一种方式
+        - ![alt text](image-6.png)
+        - 第二种方式（创建+绑定）
+        - ![alt text](image-7.png)
+  - 消息转换器
+    - 默认情况下，消息是以字节数组的形式发送的，发送对象会变成字节码，但是我们可以使用消息转换器将消息转换为我们需要的类型
+    - 引入依赖
+      - ![alt text](image-8.png)
+    - 在publisher和consumer中配置消息转换器：因为Jackson2JsonMessageConverter是默认的消息转换器，所以我们只需要在配置文件中配置即可
+      - ![alt text](image-9.png)
