@@ -39,7 +39,7 @@
   - Failsafe Cluster: 失败安全，出现异常时，直接忽略，返回空结果
   - Forking Cluster: 并行调用多个服务提供者，只要有一个成功即返回
   - Broadcast Cluster: 广播调用所有提供者，任意一个报错则报错
-- ~~**服务降级**~~
+- **服务降级**
   - 在@Reference中设置mock属性
   - mock=force:return null表示消费方对该服务的方法调用直接返回null值，不发起远程调用。
   - mock=fail:return null表示消费方对该服务的方法调用在失败后，再返回null值，不抛异常。

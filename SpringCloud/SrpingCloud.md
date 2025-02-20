@@ -94,5 +94,36 @@
     - 导入依赖，配置文件开启sentinel
       - ![alt text](image-29.png)
 ##### Sentinel
+- 用于服务保护（限流、降级、熔断）
+- ![alt text](image-30.png)
+- 定义资源：
+  - 主流框架自动实拍（Web Servlet, Dubbo, Spring Cloud, gRPC, Spring WebFlux, Reactor）所有web接口均为资源
+  - 编程式：SphU API
+  - 声明式：`@SentinelResource`
+- 定义规则：
+  - 流量控制（FlowRule)
+  - 熔断降级（DegradeRule)
+  - 系统保护（SystemRule)
+  - 来源访问控制（AuthorityRule)
+  - 热点参数（ParamFlowRule)
+- 原理：
+  - ![alt text](image-31.png)
+- 整合使用
+  - ![alt text](image-32.png)
+  - 1：sentinel默认账号密码：sentinel/sentinel
+  - 2：
+    - 配置依赖：`spring-cloud-starter-alibaba-sentinel`
+    - 配置文件
+      - ![alt text](image-33.png)
+- 异常处理
+  - ![alt text](image-34.png)
+  - ![alt text](image-35.png)
+  - 解决Web接口异常
+    - 自定义BlockExceptionHandler放入IOC容器
+    - ![alt text](image-36.png)
+  - 解决被`@SentinelResource`注解的方法异常
+    - 需要标记blockHandler或者fallback属性，如果没有标记，会抛出异常
+    - 创建同样的方法，返回值和参数一样，加上BlockException参数
+    - ![alt text](image-38.png)
 ##### Gateway
 ##### Seata
