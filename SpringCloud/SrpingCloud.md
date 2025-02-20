@@ -46,6 +46,53 @@
 - Nacos总结
   - ![alt text](image-15.png)
 ##### OpenFeign
+- 生成式REST客户端
+- 注解驱动
+  - 指定远程地址：`@FeignClient`
+  - 指定请求方式：`@GetMapping`、`@PostMapping`、`@DeleteMapping`
+  - 指定携带数据：`@RequestParam`、`@RequestBody``@RequesetBody`
+  - 指定结果返回：响应模型
+- 使用流程：
+  - 引入依赖：`spring-cloud-starter-openfeign`
+  - 开启feign远程调用：`@EnableFeignClients`
+  - ex：
+    - ![alt text](image-16.png)
+    - 任务逻辑：向server-product发起请求，请求路径为`/product/{id}`，id被当作pathVariable传递，把token放到header中,返回值为Product
+- 远程调用 - 第三方API 例子
+  - ![alt text](image-17.png)
+- 面试题：客户端负载均衡与服务端负载均衡的区别？
+  - 客户端负载均衡：发起调用的一方根据负载均衡算法挑选一个服务节点进行调用，如ribbon
+  - 服务端负载均衡：服务端（比如第三方）根据自身的负载情况，将请求分发到不同的服务节点
+- 进阶用法：
+  - 日志：如果想看到第三方服务的日志，可以在配置文件中配置日志级别
+    - ![alt text](image-18.png)
+    - 容器配置组件
+      - ![alt text](image-19.png)
+  - 超时控制：如果第三方服务响应时间过长，可以设置超时时间，避免堵塞，造成服务雪崩
+    - ![alt text](image-20.png)
+    - connectTimeout：连接超时时间，默认：10s
+    - readTimeout：读取超时时间，默认：60s
+    - ![alt text](image-21.png)
+  - 重试机制：远程调用失败后，还可以进行多次尝试，如果多次依然失败，返回错误
+    - 默认：不开启重试机制，但是有重试机制的配置
+    - ![alt text](image-22.png)
+    - 指的是：第一次100ms，第二次是1.5倍，第三次是100*1.5*1.5。如果超过了maxPeriod，就按照maxPeriod来。最大重试次数是5次
+    - 自定义比如**Logger.Level**,**Retryer**
+      - ![alt text](image-23.png)
+      - default就是上面的配置
+  - 拦截器：
+    - ![alt text](image-24.png)
+    - 请求拦截器
+    - ![alt text](image-25.png)
+    - 使用`@Component`注入IOC容器，Feign客户端会自动扫描到使用
+  - Fallback，注意：需要搭配sentinel使用
+    - ![alt text](image-26.png)
+    - 自定义fallback类，实现feign接口，重写方法，返回默认值
+      - ![alt text](image-27.png)
+    - 在@FeignClient中指定fallback类
+      - ![alt text](image-28.png)
+    - 导入依赖，配置文件开启sentinel
+      - ![alt text](image-29.png)
 ##### Sentinel
 ##### Gateway
 ##### Seata
