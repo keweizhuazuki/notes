@@ -96,26 +96,26 @@
 ##### Sentinel
 - 用于服务保护（限流、降级、熔断）
 - ![alt text](image-30.png)
-- 定义资源：
+- **定义资源：**
   - 主流框架自动实拍（Web Servlet, Dubbo, Spring Cloud, gRPC, Spring WebFlux, Reactor）所有web接口均为资源
   - 编程式：SphU API
   - 声明式：`@SentinelResource`
-- 定义规则：
+- **定义规则：**
   - 流量控制（FlowRule)
   - 熔断降级（DegradeRule)
   - 系统保护（SystemRule)
   - 来源访问控制（AuthorityRule)
   - 热点参数（ParamFlowRule)
-- 原理：
+- **原理：**
   - ![alt text](image-31.png)
-- 整合使用
+- **整合使用**
   - ![alt text](image-32.png)
   - 1：sentinel默认账号密码：sentinel/sentinel
   - 2：
     - 配置依赖：`spring-cloud-starter-alibaba-sentinel`
     - 配置文件
       - ![alt text](image-33.png)
-- 异常处理
+- **异常处理**
   - ![alt text](image-34.png)
   - ![alt text](image-35.png)
   - 解决Web接口异常
@@ -125,5 +125,115 @@
     - 需要标记blockHandler或者fallback属性，如果没有标记，会抛出异常
     - 创建同样的方法，返回值和参数一样，加上BlockException参数
     - ![alt text](image-38.png)
+  - 解决openfeign调用异常
+    - 如果openfeign有兜底回调，那么sentinel会调用兜底回调
+    - 如果没有会抛出springboot全局异常
+  - 解决SphU硬编码异常
+    - 使用try-catch捕获异常
+- **流控规则**
+  - ![alt text](image-39.png)
+  - 流控模式
+    - 直接：超过阈值，直接拒绝
+      - ![alt text](image-41.png)
+    - 关联：当关联的资源达到阈值，就限流自己
+      - ![alt text](image-43.png)
+      - ![alt text](image-44.png)
+      - 当writeDb达到阈值，就限流readDb
+    - 链路：只对指定链路限流
+      - 关闭上下文统一：spring.cloud.sentinel.web-context-unify=false
+      - ![alt text](image-40.png)
+      - 指的是：对createOrder资源进行限流，只针对/seckill路径，不针对其他路径
+      - ![alt text](image-42.png)
+  - **tips：** 只有快速失败可以和关联、链路一起使用,warm up和排队等待只能和直接一起使用
+- **流控效果**
+  - 快速失败
+    - 超出阈值，直接抛出异常
+  - warm up
+    - 阈值内，慢慢增加到阈值
+    - ![alt text](image-45.png)
+    - 一开始处理阈值的1/3，然后慢慢增加到阈值
+  - 排队等待
+    - ![alt text](image-46.png)
+- **熔断规则**
+  - ![alt text](image-50.png)
+  - ![alt text](image-47.png)
+  - 断路器的工作原理
+    - ![alt text](image-48.png)
+  - 慢调用比例
+    - ![alt text](image-49.png)
+    - 在5秒内，如果请求1秒钟还没有返回的比例超过80%，就熔断（打开断路器）30秒
+  - 异常比例
+    - ![alt text](image-51.png)
+    - 在5秒内，如果请求1秒钟异常比例超过80%，就熔断（打开断路器）30秒
+  - 异常数
+    - ![alt text](image-52.png)
+    - 在五秒内，如果异常数大于10，就熔断30秒
+- **热点规则**
+  - ![alt text](image-53.png)
+  - **注意：** 目前sentinel自带的adapter仅Dubbo方法埋点支持热点参数限流，其他模块（web）暂不支持，可通过自定义实现，但是自定义埋点的资源名不要与模块生成的资源名重复
+  - ![alt text](image-54.png)
+  - 需求1：为第0个参数设置热点参数，阈值为1，如果不携带参数，则不生效
+  - 需求2：给例外参数6设置为大阈值达到不限流的目的
+    - ![alt text](image-55.png)
+  - 需求3：把666号商品设置为0阈值，达到不让访问的目的
+    - ![alt text](image-56.png)
+  - 补充：sentinelresource处理异常规则：有blockHandler就走blockHandler，没有就走fallback
+    - fallback好处：可以处理业务异常，blockHandler只能处理sentinel异常
+    - 可以把方法签名改为Throwable而非BlockException，这样可以处理所有异常
+    - ![alt text](image-57.png)
 ##### Gateway
+- ![alt text](image-58.png)
+- 两种网关
+  - Reactive server：常用
+    - 依赖：`spring-cloud-starter-gateway`
+  - Server MVC：不常用
+    - 依赖：`spring-cloud-starter-gateway-mvc`
+- 需求：
+  - 客户端发送`/api/order/**`转到service-order
+  - 客户端发送`/api/product/**`转到service-product
+  - 以上转发有负载均衡效果
+  - 配置路由规则
+    - **断言**
+      - 选择1：在yml中配置
+        - ![alt text](image-59.png)
+        - 名称为order-route，把路径为`/api/order/**`的请求负载均衡的转发到`service-order`的服务端
+        - 基础原理：
+          - ![alt text](image-60.png)
+        - 断言断写法和长写法
+          - ![alt text](image-61.png)
+        - query断言
+          - ![alt text](image-62.png)
+          - 指的是：只有/search开头并且携带有haha参数的请求才会被转发到cn.bing.com
+      - 选择2：自定义断言规则注入IOC容器
+        - 继承`AbstractRoutePredicateFactory`
+        - 加入内部类`Config`
+        - 构建无参构造器
+        - 重写`shortcutFieldOrder`方法:返回字段顺序
+        - 重写`apply`方法：断言逻辑
+        - 细节：类名称必须以RoutePredicateFactory结尾，前缀必须匹配application.yml中的断言名称
+        - ![alt text](image-63.png)
+        - ![alt text](image-64.png)
+    - **过滤器**
+      - ![alt text](image-65.png)
+      - 路径重写过滤器
+        - ![alt text](image-66.png)
+        - ![alt text](image-67.png)
+        - 可以把路径中的/api/order/替换成/order/
+      - 默认过滤器
+        - 在spring.cloud.gateway.default-filters中配置，代表所有的路由都会经过这个过滤器
+      - 全局过滤器
+        - 自定义一个类实现GlobalFilter和Ordered（可选）接口
+        - 放入IOC容器，自动生效
+        - ![alt text](image-68.png)
+      - 自定义过滤器
+        - 继承`AbstractNameValueGatewayFilterFactory`
+        - 重写`apply`方法
+        - 通过响应式API修改请求和响应
+        - 例子：在/api/order/**路径下的请求的response-header中添加一个key为OnceToken，value为指定（jwt或uuid）的值
+        - ![alt text](image-69.png)
+        - ![alt text](image-70.png)
+        - 注意：类名必须以GatewayFilterFactory结尾，前缀必须匹配application.yml中的过滤器名称
+        - 注意：必须加入到IOC容器中
+      - 跨域
+        - ![alt text](image-71.png)
 ##### Seata
