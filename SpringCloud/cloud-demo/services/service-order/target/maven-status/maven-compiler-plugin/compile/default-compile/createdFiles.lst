@@ -1,0 +1,11 @@
+com\atguigu\order\fallback\ProductFeignClientFallback.class
+com\atguigu\order\service\OrderService.class
+com\atguigu\order\service\impl\OrderServiceImpl.class
+com\atguigu\order\feign\ProductFeignClient.class
+com\atguigu\order\OrderMainApplication$1.class
+com\atguigu\order\controller\OrderController.class
+com\atguigu\order\exception\MyBlockExceptionHandler.class
+com\atguigu\order\interceptor\TokenRequestInterceptor.class
+com\atguigu\order\OrderMainApplication.class
+com\atguigu\order\config\OrderConfig.class
+com\atguigu\order\properties\OrderProperties.class

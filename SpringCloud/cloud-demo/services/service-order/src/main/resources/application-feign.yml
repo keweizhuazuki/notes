@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 5000
+            readTimeout: 5000
+          service-product:
+            connectTimeout: 5000
+            readTimeout: 5000
+
+
+feign:
+  sentinel:
+    enabled: true

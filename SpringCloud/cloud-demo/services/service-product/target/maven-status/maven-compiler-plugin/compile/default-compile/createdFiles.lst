@@ -1,0 +1,5 @@
+com\atguigu\product\controller\ProductController.class
+com\atguigu\product\ProductMainApplication.class
+com\atguigu\product\service\impl\ProductServiceImpl.class
+com\atguigu\product\config\ProductServiceConfig.class
+com\atguigu\product\service\ProductService.class
