@@ -237,3 +237,30 @@
       - 跨域
         - ![alt text](image-71.png)
 ##### Seata
+- 分布式事务解决中间件
+- 原理：
+  - ![alt text](image-72.png)
+- seata下载：
+  - https://seata.apache.org/zh-cn/download/seata-server/
+  - 进入/bin，执行`seata-server.bat`：启动seata
+  - 账号密码默认：seata/seata
+- 引入依赖：
+  - ![alt text](image-73.png)
+- 配置文件：
+  - ![alt text](image-74.png)
+- 在最顶层调用链路上加上`@GlobalTransactional`注解
+  - seata会开始一个全局事务，分支事务如果有异常，会回滚全局事务
+- 二阶提交协议
+  - ![alt text](image-75.png)
+- 四种事务模式
+  - AT模式
+    - 自动模式，非侵入式，第一阶段提交，第二阶段回滚
+  - XA模式
+    - 第一阶段不提交开始阻塞，第二阶段提交
+  - TCC模式
+    - 手写两阶段提交
+  - Saga模式
+    - 事件驱动，异步补偿，基于消息队列
+
+##### Spring Cloud 总结
+- ![alt text](yuque_diagram.jpg)
