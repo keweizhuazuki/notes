@@ -110,6 +110,8 @@
   - ![alt text](image-31.png)
 - **整合使用**
   - ![alt text](image-32.png)
+  - 官方文档：https://sentinelguard.io/zh-cn/docs/quick-start.html
+  - 注：需要下载jar包才能启动控制台
   - 1：sentinel默认账号密码：sentinel/sentinel
   - 2：
     - 配置依赖：`spring-cloud-starter-alibaba-sentinel`
