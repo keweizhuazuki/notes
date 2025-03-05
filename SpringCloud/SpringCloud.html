@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Spring Cloud</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h4 id="spring-cloud">Spring Cloud</h4>
+<ul>
+<li>分布式微服务架构：
+<ul>
+<li>服务注册与发现：</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-1.png" alt="alt text"></li>
+<li>当用户想要获取订单服务时，首先会通过服务注册中心获取服务的地址，然后通过负载均衡器选择一个服务节点进行访问。</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-2.png" alt="alt text"></li>
+</ul>
+</li>
+<li>环境准备
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-3.png" alt="alt text"></li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-4.png" alt="alt text"></li>
+</ul>
+</li>
+</ul>
+<h5 id="nacos">Nacos</h5>
+<ul>
+<li>架构：
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-5.png" alt="alt text"></li>
+</ul>
+</li>
+<li>下载：
+<ul>
+<li><a href="https://nacos.io/download/release-history/?spm=5238cd80.c984973.0.0.6be14023VdL1Gl">https://nacos.io/download/release-history/?spm=5238cd80.c984973.0.0.6be14023VdL1Gl</a></li>
+<li>进入bin目录，执行命令：<code>startup.cmd -m standalone</code>：启动nacos单机模式</li>
+</ul>
+</li>
+<li>服务注册流程
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-6.png" alt="alt text"></li>
+</ul>
+</li>
+<li>服务发现：
+<ul>
+<li>开启服务发现功能：<code>@EnableDiscoveryClient</code></li>
+<li>api：<code>DiscoveryClient</code>：所有服务发现都有的接口</li>
+<li>api：<code>NacosServiceDiscovery</code>:只有nacos才有的服务发现</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-7.png" alt="alt text"></li>
+</ul>
+</li>
+<li>远程调用负载均衡
+<ul>
+<li>引入负载均衡依赖：<code>spring-cloud-starter-loadbalancer</code></li>
+<li>api：<code>LoadBalancerClient</code>：所有负载均衡都有的接口</li>
+<li>方法：<code>choose(String serviceId)</code>：负载均衡地选择一个服务实例</li>
+<li>使用注解：<code>@LoadBalanced</code>：开启负载均衡标记在RestTemplate上</li>
+</ul>
+</li>
+<li>配置中心
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-8.png" alt="alt text"></li>
+<li>基本使用
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-9.png" alt="alt text"></li>
+<li><code>@Value(“${xx}”)</code> 获取配置 + <code>@RefreshScope</code> 实现自动刷新</li>
+<li><code>@ConfigurationProperties</code>无感自动刷新</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-10.png" alt="alt text"></li>
+<li>无需RefreshScope</li>
+</ul>
+</li>
+<li>NacosConfigManager监听配置变化：一旦配置发生变化，可以选择监听+通知
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-11.png" alt="alt text"></li>
+</ul>
+</li>
+<li>面试题：Nacos中的数据集 和 application.properties 有相同的配置项，哪个生效？
+<ul>
+<li>应该是Nacos中的数据集生效，因为Nacos中的数据集优先级更高</li>
+</ul>
+</li>
+<li>数据隔离
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-12.png" alt="alt text"></li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-13.png" alt="alt text"></li>
+<li>配置为namespace为dev，group为order的common.properties和database.properties</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-14.png" alt="alt text"></li>
+<li>不同环境的不同配置</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Nacos总结
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-15.png" alt="alt text"></li>
+</ul>
+</li>
+</ul>
+<h5 id="openfeign">OpenFeign</h5>
+<ul>
+<li>生成式REST客户端</li>
+<li>注解驱动
+<ul>
+<li>指定远程地址：<code>@FeignClient</code></li>
+<li>指定请求方式：<code>@GetMapping</code>、<code>@PostMapping</code>、<code>@DeleteMapping</code></li>
+<li>指定携带数据：<code>@RequestParam</code>、<code>@RequestBody``@RequesetBody</code></li>
+<li>指定结果返回：响应模型</li>
+</ul>
+</li>
+<li>使用流程：
+<ul>
+<li>引入依赖：<code>spring-cloud-starter-openfeign</code></li>
+<li>开启feign远程调用：<code>@EnableFeignClients</code></li>
+<li>ex：
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-16.png" alt="alt text"></li>
+<li>任务逻辑：向server-product发起请求，请求路径为<code>/product/{id}</code>，id被当作pathVariable传递，把token放到header中,返回值为Product</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>远程调用 - 第三方API 例子
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-17.png" alt="alt text"></li>
+</ul>
+</li>
+<li>面试题：客户端负载均衡与服务端负载均衡的区别？
+<ul>
+<li>客户端负载均衡：发起调用的一方根据负载均衡算法挑选一个服务节点进行调用，如ribbon</li>
+<li>服务端负载均衡：服务端（比如第三方）根据自身的负载情况，将请求分发到不同的服务节点</li>
+</ul>
+</li>
+<li>进阶用法：
+<ul>
+<li>日志：如果想看到第三方服务的日志，可以在配置文件中配置日志级别
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-18.png" alt="alt text"></li>
+<li>容器配置组件
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-19.png" alt="alt text"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>超时控制：如果第三方服务响应时间过长，可以设置超时时间，避免堵塞，造成服务雪崩
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-20.png" alt="alt text"></li>
+<li>connectTimeout：连接超时时间，默认：10s</li>
+<li>readTimeout：读取超时时间，默认：60s</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-21.png" alt="alt text"></li>
+</ul>
+</li>
+<li>重试机制：远程调用失败后，还可以进行多次尝试，如果多次依然失败，返回错误
+<ul>
+<li>默认：不开启重试机制，但是有重试机制的配置</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-22.png" alt="alt text"></li>
+<li>指的是：第一次100ms，第二次是1.5倍，第三次是100<em>1.5</em>1.5。如果超过了maxPeriod，就按照maxPeriod来。最大重试次数是5次</li>
+<li>自定义比如<strong>Logger.Level</strong>,<strong>Retryer</strong>
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-23.png" alt="alt text"></li>
+<li>default就是上面的配置</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>拦截器：
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-24.png" alt="alt text"></li>
+<li>请求拦截器</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-25.png" alt="alt text"></li>
+<li>使用<code>@Component</code>注入IOC容器，Feign客户端会自动扫描到使用</li>
+</ul>
+</li>
+<li>Fallback，注意：需要搭配sentinel使用
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-26.png" alt="alt text"></li>
+<li>自定义fallback类，实现feign接口，重写方法，返回默认值
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-27.png" alt="alt text"></li>
+</ul>
+</li>
+<li>在@FeignClient中指定fallback类
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-28.png" alt="alt text"></li>
+</ul>
+</li>
+<li>导入依赖，配置文件开启sentinel
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-29.png" alt="alt text"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="sentinel">Sentinel</h5>
+<ul>
+<li>用于服务保护（限流、降级、熔断）</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-30.png" alt="alt text"></li>
+<li><strong>定义资源：</strong>
+<ul>
+<li>主流框架自动实拍（Web Servlet, Dubbo, Spring Cloud, gRPC, Spring WebFlux, Reactor）所有web接口均为资源</li>
+<li>编程式：SphU API</li>
+<li>声明式：<code>@SentinelResource</code></li>
+</ul>
+</li>
+<li><strong>定义规则：</strong>
+<ul>
+<li>流量控制（FlowRule)</li>
+<li>熔断降级（DegradeRule)</li>
+<li>系统保护（SystemRule)</li>
+<li>来源访问控制（AuthorityRule)</li>
+<li>热点参数（ParamFlowRule)</li>
+</ul>
+</li>
+<li><strong>原理：</strong>
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-31.png" alt="alt text"></li>
+</ul>
+</li>
+<li><strong>整合使用</strong>
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-32.png" alt="alt text"></li>
+<li>1：sentinel默认账号密码：sentinel/sentinel</li>
+<li>2：
+<ul>
+<li>配置依赖：<code>spring-cloud-starter-alibaba-sentinel</code></li>
+<li>配置文件
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-33.png" alt="alt text"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>异常处理</strong>
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-34.png" alt="alt text"></li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-35.png" alt="alt text"></li>
+<li>解决Web接口异常
+<ul>
+<li>自定义BlockExceptionHandler放入IOC容器</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-36.png" alt="alt text"></li>
+</ul>
+</li>
+<li>解决被<code>@SentinelResource</code>注解的方法异常
+<ul>
+<li>需要标记blockHandler或者fallback属性，如果没有标记，会抛出异常</li>
+<li>创建同样的方法，返回值和参数一样，加上BlockException参数</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-38.png" alt="alt text"></li>
+</ul>
+</li>
+<li>解决openfeign调用异常
+<ul>
+<li>如果openfeign有兜底回调，那么sentinel会调用兜底回调</li>
+<li>如果没有会抛出springboot全局异常</li>
+</ul>
+</li>
+<li>解决SphU硬编码异常
+<ul>
+<li>使用try-catch捕获异常</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>流控规则</strong>
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-39.png" alt="alt text"></li>
+<li>流控模式
+<ul>
+<li>直接：超过阈值，直接拒绝
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-41.png" alt="alt text"></li>
+</ul>
+</li>
+<li>关联：当关联的资源达到阈值，就限流自己
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-43.png" alt="alt text"></li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-44.png" alt="alt text"></li>
+<li>当writeDb达到阈值，就限流readDb</li>
+</ul>
+</li>
+<li>链路：只对指定链路限流
+<ul>
+<li>关闭上下文统一：spring.cloud.sentinel.web-context-unify=false</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-40.png" alt="alt text"></li>
+<li>指的是：对createOrder资源进行限流，只针对/seckill路径，不针对其他路径</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-42.png" alt="alt text"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>tips：</strong> 只有快速失败可以和关联、链路一起使用,warm up和排队等待只能和直接一起使用</li>
+</ul>
+</li>
+<li><strong>流控效果</strong>
+<ul>
+<li>快速失败
+<ul>
+<li>超出阈值，直接抛出异常</li>
+</ul>
+</li>
+<li>warm up
+<ul>
+<li>阈值内，慢慢增加到阈值</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-45.png" alt="alt text"></li>
+<li>一开始处理阈值的1/3，然后慢慢增加到阈值</li>
+</ul>
+</li>
+<li>排队等待
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-46.png" alt="alt text"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>熔断规则</strong>
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-50.png" alt="alt text"></li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-47.png" alt="alt text"></li>
+<li>断路器的工作原理
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-48.png" alt="alt text"></li>
+</ul>
+</li>
+<li>慢调用比例
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-49.png" alt="alt text"></li>
+<li>在5秒内，如果请求1秒钟还没有返回的比例超过80%，就熔断（打开断路器）30秒</li>
+</ul>
+</li>
+<li>异常比例
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-51.png" alt="alt text"></li>
+<li>在5秒内，如果请求1秒钟异常比例超过80%，就熔断（打开断路器）30秒</li>
+</ul>
+</li>
+<li>异常数
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-52.png" alt="alt text"></li>
+<li>在五秒内，如果异常数大于10，就熔断30秒</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>热点规则</strong>
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-53.png" alt="alt text"></li>
+<li><strong>注意：</strong> 目前sentinel自带的adapter仅Dubbo方法埋点支持热点参数限流，其他模块（web）暂不支持，可通过自定义实现，但是自定义埋点的资源名不要与模块生成的资源名重复</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-54.png" alt="alt text"></li>
+<li>需求1：为第0个参数设置热点参数，阈值为1，如果不携带参数，则不生效</li>
+<li>需求2：给例外参数6设置为大阈值达到不限流的目的
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-55.png" alt="alt text"></li>
+</ul>
+</li>
+<li>需求3：把666号商品设置为0阈值，达到不让访问的目的
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-56.png" alt="alt text"></li>
+</ul>
+</li>
+<li>补充：sentinelresource处理异常规则：有blockHandler就走blockHandler，没有就走fallback
+<ul>
+<li>fallback好处：可以处理业务异常，blockHandler只能处理sentinel异常</li>
+<li>可以把方法签名改为Throwable而非BlockException，这样可以处理所有异常</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-57.png" alt="alt text"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="gateway">Gateway</h5>
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-58.png" alt="alt text"></li>
+<li>两种网关
+<ul>
+<li>Reactive server：常用
+<ul>
+<li>依赖：<code>spring-cloud-starter-gateway</code></li>
+</ul>
+</li>
+<li>Server MVC：不常用
+<ul>
+<li>依赖：<code>spring-cloud-starter-gateway-mvc</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>需求：
+<ul>
+<li>客户端发送<code>/api/order/**</code>转到service-order</li>
+<li>客户端发送<code>/api/product/**</code>转到service-product</li>
+<li>以上转发有负载均衡效果</li>
+<li>配置路由规则
+<ul>
+<li><strong>断言</strong>
+<ul>
+<li>选择1：在yml中配置
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-59.png" alt="alt text"></li>
+<li>名称为order-route，把路径为<code>/api/order/**</code>的请求负载均衡的转发到<code>service-order</code>的服务端</li>
+<li>基础原理：
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-60.png" alt="alt text"></li>
+</ul>
+</li>
+<li>断言断写法和长写法
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-61.png" alt="alt text"></li>
+</ul>
+</li>
+<li>query断言
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-62.png" alt="alt text"></li>
+<li>指的是：只有/search开头并且携带有haha参数的请求才会被转发到cn.bing.com</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>选择2：自定义断言规则注入IOC容器
+<ul>
+<li>继承<code>AbstractRoutePredicateFactory</code></li>
+<li>加入内部类<code>Config</code></li>
+<li>构建无参构造器</li>
+<li>重写<code>shortcutFieldOrder</code>方法:返回字段顺序</li>
+<li>重写<code>apply</code>方法：断言逻辑</li>
+<li>细节：类名称必须以RoutePredicateFactory结尾，前缀必须匹配application.yml中的断言名称</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-63.png" alt="alt text"></li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-64.png" alt="alt text"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>过滤器</strong>
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-65.png" alt="alt text"></li>
+<li>路径重写过滤器
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-66.png" alt="alt text"></li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-67.png" alt="alt text"></li>
+<li>可以把路径中的/api/order/替换成/order/</li>
+</ul>
+</li>
+<li>默认过滤器
+<ul>
+<li>在spring.cloud.gateway.default-filters中配置，代表所有的路由都会经过这个过滤器</li>
+</ul>
+</li>
+<li>全局过滤器
+<ul>
+<li>自定义一个类实现GlobalFilter和Ordered（可选）接口</li>
+<li>放入IOC容器，自动生效</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-68.png" alt="alt text"></li>
+</ul>
+</li>
+<li>自定义过滤器
+<ul>
+<li>继承<code>AbstractNameValueGatewayFilterFactory</code></li>
+<li>重写<code>apply</code>方法</li>
+<li>通过响应式API修改请求和响应</li>
+<li>例子：在/api/order/**路径下的请求的response-header中添加一个key为OnceToken，value为指定（jwt或uuid）的值</li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-69.png" alt="alt text"></li>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-70.png" alt="alt text"></li>
+<li>注意：类名必须以GatewayFilterFactory结尾，前缀必须匹配application.yml中的过滤器名称</li>
+<li>注意：必须加入到IOC容器中</li>
+</ul>
+</li>
+<li>跨域
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-71.png" alt="alt text"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="seata">Seata</h5>
+<ul>
+<li>分布式事务解决中间件</li>
+<li>原理：
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-72.png" alt="alt text"></li>
+</ul>
+</li>
+<li>seata下载：
+<ul>
+<li><a href="https://seata.apache.org/zh-cn/download/seata-server/">https://seata.apache.org/zh-cn/download/seata-server/</a></li>
+<li>进入/bin，执行<code>seata-server.bat</code>：启动seata</li>
+<li>账号密码默认：seata/seata</li>
+</ul>
+</li>
+<li>引入依赖：
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-73.png" alt="alt text"></li>
+</ul>
+</li>
+<li>配置文件：
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-74.png" alt="alt text"></li>
+</ul>
+</li>
+<li>在最顶层调用链路上加上<code>@GlobalTransactional</code>注解
+<ul>
+<li>seata会开始一个全局事务，分支事务如果有异常，会回滚全局事务</li>
+</ul>
+</li>
+<li>二阶提交协议
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\image-75.png" alt="alt text"></li>
+</ul>
+</li>
+<li>四种事务模式
+<ul>
+<li>AT模式
+<ul>
+<li>自动模式，非侵入式，第一阶段提交，第二阶段回滚</li>
+</ul>
+</li>
+<li>XA模式
+<ul>
+<li>第一阶段不提交开始阻塞，第二阶段提交</li>
+</ul>
+</li>
+<li>TCC模式
+<ul>
+<li>手写两阶段提交</li>
+</ul>
+</li>
+<li>Saga模式
+<ul>
+<li>事件驱动，异步补偿，基于消息队列</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="spring-cloud-总结">Spring Cloud 总结</h5>
+<ul>
+<li><img src="file:///e:\develop\notes\SpringCloud\yuque_diagram.jpg" alt="alt text"></li>
+</ul>
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+            
+        </body>
+        </html>
